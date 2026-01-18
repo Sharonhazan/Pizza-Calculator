@@ -1,1 +1,2 @@
-# Pizza-Calculator
+# Pizza Dough Calculator
+A professional pizza dough calculator built with vanilla JavaScript and Tailwind CSS that uses baker's percentage formulas to calculate precise ingredient weights based on pizza count, size (20-50cm), and hydration levels (50-80%). The calculator features an interactive interface with real-time calculations, a printable recipe output, PWA support for offline use and home screen installation, and a Screen Wake Lock feature to keep your device awake during baking. Perfect for home pizza makers who want consistent, scalable recipes with automatic conversions and detailed baking instructions included.ShareArtifactsDownload allReadmeDocument · MD 
