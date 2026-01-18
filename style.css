@@ -1,0 +1,52 @@
+body {
+    background-color: #f8fafc;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.card {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+input[type="range"] {
+    accent-color: #ef4444;
+}
+
+/* Status indicator for Wake Lock */
+.wake-status-active {
+    color: #10b981;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Print Styling */
+@media print {
+    @page { margin: 0.5cm; }
+    body { background-color: white; padding: 0; font-size: 10pt; }
+    .no-print { display: none !important; }
+    .card { box-shadow: none; border: none; padding: 0 !important; margin: 0 !important; }
+    .print-grid { 
+        display: grid !important; 
+        grid-template-columns: 1fr 1fr !important; 
+        gap: 1rem !important; 
+        margin-bottom: 1rem !important; 
+    }
+    header h1 { font-size: 18pt !important; margin-bottom: 5pt; }
+    .recipe-instructions { 
+        margin-top: 1rem !important; 
+        padding-top: 0.5rem !important; 
+        break-inside: avoid; 
+    }
+    table th, table td { padding: 0.4rem !important; }
+    .totals-box { 
+        padding: 0.75rem !important; 
+        background-color: #fef2f2 !important; 
+        -webkit-print-color-adjust: exact; 
+    }
+}

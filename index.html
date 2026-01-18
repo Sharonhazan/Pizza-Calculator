@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Dough Calculator</title>
+    <meta name="theme-color" content="#ef4444">
+    <meta name="description" content="A professional pizza dough calculator with PWA and Wake Lock support.">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" id="pwa-manifest">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-2xl mx-auto">
+        <header class="text-center mb-8 flex flex-col items-center">
+            <h1 class="text-3xl font-bold text-slate-800">Pizza Dough Calculator</h1>
+            
+            <div class="flex gap-2 no-print">
+                <button id="printBtn" onclick="window.print()" class="mt-4 flex items-center gap-2 px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm font-medium">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    Print
+                </button>
+
+                <!-- Screen Wake Lock Button -->
+                <button id="wakeLockBtn" class="mt-4 flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium shadow-sm">
+                    <span id="wakeIcon">🌙</span>
+                    <span id="wakeText">Stay Awake</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="card p-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 print-grid">
+                <!-- Inputs -->
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="text-sm font-semibold text-slate-700">Hydration</label>
+                            <span id="hydroBadge" class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-bold text-red-700 uppercase tracking-wide">
+                                62%
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-4 no-print">
+                            <input type="range" id="hydroRange" min="50" max="80" value="62" class="w-full">
+                        </div>
+                    </div>
+
+                    <div class="no-print">
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Number of Pizzas</label>
+                        <div class="flex items-center gap-4">
+                            <input type="range" id="countRange" min="1" max="20" value="2" class="w-full">
+                            <span id="countValue" class="text-xl font-bold text-red-500 w-8 text-center">2</span>
+                        </div>
+                    </div>
+
+                    <div class="no-print">
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Pizza Size</label>
+                        <div class="flex items-center gap-4">
+                            <input type="range" id="sizeRange" min="20" max="50" value="33" class="w-full">
+                            <div class="text-right min-w-[80px]">
+                                <div id="sizeValue" class="text-xl font-bold text-red-500">33cm</div>
+                                <div id="inchValue" class="text-xs font-medium text-slate-400">~13"</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Static info for print -->
+                    <div class="hidden print:block text-slate-700 space-y-1 border-l-4 border-red-500 pl-4">
+                        <p class="font-bold">Batch Details:</p>
+                        <p id="printDetails">2 Pizzas @ 33cm (~13")</p>
+                    </div>
+                </div>
+
+                <!-- Totals -->
+                <div class="totals-box flex flex-col justify-center items-center bg-red-50 rounded-xl p-6 border border-red-100 text-center">
+                    <span class="text-sm text-red-600 font-medium uppercase tracking-widest">Total Dough Weight</span>
+                    <span id="totalDough" class="text-4xl font-black text-red-600 my-2">--</span>
+                    <span id="perPizza" class="text-sm text-red-500 font-medium">--</span>
+                </div>
+            </div>
+
+            <!-- Ingredients Table -->
+            <div class="overflow-hidden border border-slate-200 rounded-lg">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200">
+                            <th class="p-4 text-sm font-bold text-slate-600">Ingredient</th>
+                            <th class="p-4 text-sm font-bold text-slate-600">%</th>
+                            <th class="p-4 text-sm font-bold text-slate-600 text-right">Grams</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ingredientBody"></tbody>
+                </table>
+            </div>
+
+            <!-- Instructions Section -->
+            <div class="recipe-instructions mt-8 pt-6 border-t border-slate-100">
+                <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <span>📝</span> Method
+                </h2>
+                <ol class="space-y-4 text-sm text-slate-600">
+                    <li class="flex gap-3">
+                        <span class="flex-none flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-slate-500 font-bold text-xs no-print">1</span>
+                        <p><strong>Dough Prep:</strong> Bloom yeast in warm water (32-35°C) with sugar. Mix with flour, salt, and oil. Knead for 8-10 mins until smooth. <span class="italic text-slate-500" id="kneadNote"></span></p>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="flex-none flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-slate-500 font-bold text-xs no-print">2</span>
+                        <p><strong>Fermentation:</strong> Allow dough to double in size (approx. 2 hours at room temp, or 24-48 hours in the fridge). Divide into balls and let rest for 60-90 mins before use.</p>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="flex-none flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-slate-500 font-bold text-xs no-print">3</span>
+                        <p><strong>Preheat:</strong> Set oven to max (250-275°C). Place an inverted baking tray on the upper rack to heat for 30-45 minutes.</p>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="flex-none flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-slate-500 font-bold text-xs no-print">4</span>
+                        <p><strong>Shape:</strong> Stretch dough carefully to target size on a floured surface. Place on parchment paper.</p>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="flex-none flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-slate-500 font-bold text-xs no-print">5</span>
+                        <p><strong>Bake:</strong> Add toppings. Slide onto the hot tray. Bake for 6-10 minutes until golden and bubbling.</p>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Recipe Quick Notes -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 no-print">
+            <div class="card p-4 text-center">
+                <span class="block text-xl">🌡️</span>
+                <p class="text-xs font-bold text-slate-400 uppercase mt-2">Water Temp</p>
+                <p class="text-sm font-semibold text-slate-700">32-35°C</p>
+            </div>
+            <div class="card p-4 text-center">
+                <span class="block text-xl">⏲️</span>
+                <p class="text-xs font-bold text-slate-400 uppercase mt-2">Fermentation</p>
+                <p class="text-sm font-semibold text-slate-700">24-48h Cold</p>
+            </div>
+            <div class="card p-4 text-center">
+                <span class="block text-xl">🔥</span>
+                <p class="text-xs font-bold text-slate-400 uppercase mt-2">Oven Temp</p>
+                <p class="text-sm font-semibold text-slate-700">Max Setting</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+</body>
+</html>
