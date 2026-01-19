@@ -12,9 +12,9 @@ function setupPWA() {
         "description": "Calculate perfect pizza dough hydration and weights.",
         "theme_color": "#ef4444",
         "icons": [{
-            "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIiBmaWxsPSIjZWY0NDQ0Ii8+PHRleHQgeT0iLjllbSIgeD0iLjA1ZW0iIGZvbnQtc2l6ZT0iODAiIGZpbGw9IndoaXRlIj7wn4ySPC90ZXh0Pjwvc3ZnPg==",
+            "src": "icon.png",
             "sizes": "512x512",
-            "type": "image/svg+xml"
+            "type": "image/png"
         }]
     };
     const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
@@ -157,4 +157,5 @@ document.addEventListener('visibilitychange', async () => {
 
 // Initialization
 setupPWA();
+
 calculate();
