@@ -84,6 +84,43 @@
                 </div>
             </div>
 
+            <!-- Advanced Settings Section -->
+            <div class="advanced-settings mb-8 no-print">
+                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                    <button id="advancedToggle" class="w-full p-4 bg-slate-50 hover:bg-slate-100 transition-colors flex items-center justify-between text-left">
+                        <span class="text-sm font-bold text-slate-700 flex items-center gap-2">
+                            <span>⚙️</span> Advanced Settings
+                        </span>
+                        <span id="advancedIcon" class="text-slate-400 transition-transform">▼</span>
+                    </button>
+                    <div id="advancedPanel" class="hidden p-4 bg-white border-t border-slate-200">
+                        <p class="text-xs text-slate-500 mb-4">Customize ingredient percentages for your recipe</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Salt (%)</label>
+                                <input type="number" id="saltInput" min="0" max="5" step="0.1" value="2.0" 
+                                       class="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Oil (%)</label>
+                                <input type="number" id="oilInput" min="0" max="10" step="0.1" value="2.0" 
+                                       class="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Sugar (%)</label>
+                                <input type="number" id="sugarInput" min="0" max="5" step="0.1" value="0.5" 
+                                       class="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Yeast (%)</label>
+                                <input type="number" id="yeastInput" min="0.1" max="2" step="0.1" value="0.3" 
+                                       class="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Ingredients Table -->
             <div class="overflow-hidden border border-slate-200 rounded-lg">
                 <table class="w-full text-left border-collapse">
