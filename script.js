@@ -67,12 +67,14 @@ function resetWakeUI() {
  * CALCULATOR LOGIC
  * Handles ingredient ratios and dough weight math
  */
-const RATIOS = { salt: 2.0, oil: 2.0, sugar: 0.5, yeast: 0.3 };
-
 const inputs = {
     count: document.getElementById('countRange'),
     size: document.getElementById('sizeRange'),
-    hydro: document.getElementById('hydroRange')
+    hydro: document.getElementById('hydroRange'),
+    salt: document.getElementById('saltInput'),
+    oil: document.getElementById('oilInput'),
+    sugar: document.getElementById('sugarInput'),
+    yeast: document.getElementById('yeastInput')
 };
 
 const displays = {
@@ -91,6 +93,10 @@ function calculate() {
     const count = parseInt(inputs.count.value);
     const sizeCm = parseInt(inputs.size.value);
     const hydration = parseInt(inputs.hydro.value);
+    const salt = parseFloat(inputs.salt.value);
+    const oil = parseFloat(inputs.oil.value);
+    const sugar = parseFloat(inputs.sugar.value);
+    const yeast = parseFloat(inputs.yeast.value);
     
     // Formula for dough weight based on surface area
     const sizeInches = sizeCm / 2.54;
@@ -114,21 +120,21 @@ function calculate() {
     }
 
     // Baker's Percentage Calculation
-    const totalPercentage = 100 + hydration + RATIOS.salt + RATIOS.oil + RATIOS.sugar + RATIOS.yeast;
+    const totalPercentage = 100 + hydration + salt + oil + sugar + yeast;
     const flourWeight = (totalWeight / totalPercentage) * 100;
     
     const ingredients = [
         { name: 'Bread Flour', pct: 100, weight: flourWeight },
         { name: 'Water', pct: hydration, weight: flourWeight * (hydration / 100) },
-        { name: 'Salt', pct: RATIOS.salt, weight: flourWeight * 0.02 },
-        { name: 'Olive Oil', pct: RATIOS.oil, weight: flourWeight * 0.02 },
-        { name: 'Sugar', pct: RATIOS.sugar, weight: flourWeight * 0.005 },
-        { name: 'Instant Yeast', pct: RATIOS.yeast, weight: flourWeight * 0.003 }
+        { name: 'Salt', pct: salt, weight: flourWeight * (salt / 100) },
+        { name: 'Olive Oil', pct: oil, weight: flourWeight * (oil / 100) },
+        { name: 'Sugar', pct: sugar, weight: flourWeight * (sugar / 100) },
+        { name: 'Instant Yeast', pct: yeast, weight: flourWeight * (yeast / 100) }
     ];
 
     displays.table.innerHTML = ingredients.map(ing => `
         <tr class="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors">
-            <td class="p-4 text-sm text-slate-700 font-medium">${ing.name}</td>
+            <td class="p-4 text-sm text-slate-700 font-medium">${ing.name}${ing.pct !== 100 ? ` (${ing.pct}%)` : ''}</td>
             <td class="p-4 text-xs text-slate-400">${ing.pct}%</td>
             <td class="p-4 text-sm text-slate-900 font-bold text-right">${ing.weight.toFixed(1)}g</td>
         </tr>
@@ -142,10 +148,30 @@ function calculate() {
     }
 }
 
+// Advanced Settings Toggle
+const advancedToggle = document.getElementById('advancedToggle');
+const advancedPanel = document.getElementById('advancedPanel');
+const advancedIcon = document.getElementById('advancedIcon');
+
+advancedToggle.addEventListener('click', () => {
+    const isHidden = advancedPanel.classList.contains('hidden');
+    if (isHidden) {
+        advancedPanel.classList.remove('hidden');
+        advancedIcon.style.transform = 'rotate(180deg)';
+    } else {
+        advancedPanel.classList.add('hidden');
+        advancedIcon.style.transform = 'rotate(0deg)';
+    }
+});
+
 // Event Listeners
 inputs.count.oninput = calculate;
 inputs.size.oninput = calculate;
 inputs.hydro.oninput = calculate;
+inputs.salt.oninput = calculate;
+inputs.oil.oninput = calculate;
+inputs.sugar.oninput = calculate;
+inputs.yeast.oninput = calculate;
 wakeBtn.addEventListener('click', toggleWakeLock);
 
 // Handle re-acquiring wake lock on visibility change
@@ -157,5 +183,4 @@ document.addEventListener('visibilitychange', async () => {
 
 // Initialization
 setupPWA();
-
 calculate();
