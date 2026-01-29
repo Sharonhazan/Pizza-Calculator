@@ -1,28 +1,4 @@
 /**
- * PWA SETUP
- * Creates a dynamic manifest for the application
- */
-function setupPWA() {
-    const manifest = {
-        "name": "Pizza Dough Calculator",
-        "short_name": "Pizza Calc",
-        "start_url": ".",
-        "display": "standalone",
-        "background_color": "#ffffff",
-        "description": "Calculate perfect pizza dough hydration and weights.",
-        "theme_color": "#ef4444",
-        "icons": [{
-            "src": "icon.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        }]
-    };
-    const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-    const manifestURL = URL.createObjectURL(manifestBlob);
-    document.getElementById('pwa-manifest').setAttribute('href', manifestURL);
-}
-
-/**
  * SCREEN WAKE LOCK
  * Keeps the screen from turning off during baking
  */
@@ -182,5 +158,4 @@ document.addEventListener('visibilitychange', async () => {
 });
 
 // Initialization
-setupPWA();
 calculate();
